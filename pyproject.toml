@@ -1,0 +1,64 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "flower-privacy-attacks"
+version = "1.0.0"
+description = "Reconstruction Attacks on Federated Learning and Additively Homomorphic Encryption Defense."
+license = "MIT"
+dependencies = [
+    "flwr[simulation]>=1.28.0",
+    "torch>=2.2.0",
+    "torchvision>=0.17.0",
+    "matplotlib>=3.8.0",
+    "numpy>=1.26.0",
+    "phe>=1.5.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[tool.flwr.app]
+publisher = "dlg-research"
+
+[tool.flwr.app.components]
+serverapp = "flower_attacks.server_app:app"
+clientapp = "flower_attacks.client_app:app"
+
+[tool.flwr.app.config]
+num-server-rounds = 1
+dlg-iterations = 300
+# attack variant: false = DLG (Zhu 2019), true = iDLG (Zhao 2020)
+use-idlg = false
+# run BOTH DLG and iDLG on the same intercepted gradients and report timing
+benchmark-attacks = false
+# --- GAN reconstruction attack (Hitaj et al., CCS 2017) ---
+# NOTE: the adversary is a CLIENT, not the server; the server stays honest.
+# Uses MNIST (not CIFAR-100). Victim = partition 0 (digits 0-4),
+# adversary = partition 1 (digits 5-9). Needs many rounds.
+use-gan = false
+target-class = 4            # victim's class, never owned by the adversary
+gan-adversary-id = 1        # partition_id of the malicious client
+gan-latent-dim = 100
+gan-steps-per-round = 100   # generator updates per FL round
+gan-batch-size = 64
+gan-lr = 0.02               # SGD lr for G, per Section 8.3 of the paper
+num-injected-samples = 64   # mislabelled samples injected per round
+batch-size = 64
+local-epochs = 1
+learning-rate = 0.001       # local SGD lr for the shared model
+lr-decay = 0.0000001
+save-every = 5
+output-dir = "outputs"
+
+[tool.flwr.federations]
+default = "local-simulation"
+
+[tool.flwr.federations.local-simulation]
+options.num-supernodes = 9
+
+# Two-participant federation for the GAN attack (victim + adversary),
+# matching the reference implementation.
+[tool.flwr.federations.gan-simulation]
+options.num-supernodes = 2
