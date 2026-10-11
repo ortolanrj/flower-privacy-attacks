@@ -58,13 +58,6 @@ flwr run . gan-simulation --run-config "use-gan=true num-server-rounds=160" --st
 flwr run . gan-simulation --run-config \
   "use-gan=true use-encryption=true num-server-rounds=160 max-encrypt-values=500" --stream
 
-# Standalone helpers (no Flower runtime)
-python run_dlg.py --index 25 --iters 300 --compare   # DLG vs iDLG
-python benchmark_dlg_idlg.py --trials 5 --iters 150  # timing comparison
-python demo_defense.py --key-length 1024 --iters 300 # PHE defeats DLG
-python demo_gan_phe.py --rounds 4                    # PHE does NOT defeat GAN
-```
-
 ## Layout
 
 ```
