@@ -7,7 +7,7 @@ learning and one cryptographic defence, all selectable by configuration flags.
 |------|------|--------|-----------|---------|
 | DLG  | *(default)* | Deep Leakage from Gradients (Zhu et al., NeurIPS 2019) | server | CIFAR-100 |
 | iDLG | `use-idlg=true` | Improved DLG (Zhao et al., 2020) | server | CIFAR-100 |
-| PHE  | `use-encryption=true` | *Additively Homomorphic Encryption* (Phong et al., 2017) | — | CIFAR-100 |
+| PHE  | `use-encryption=true` | Additively Homomorphic Encryption (Phong et al., 2017) | — | CIFAR-100 |
 | GAN  | `use-gan=true` | Deep Models Under the GAN (Hitaj et al., CCS 2017) | **client** | MNIST |
 
 PHE composes with every mode. Against DLG/iDLG it is a complete defence;
