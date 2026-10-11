@@ -1,7 +1,7 @@
-# Privacy Attacks & Defences in Federated Learning — Flower + PyTorch
+# Privacy Attacks & Defenses in Federated Learning — Flower + PyTorch
 
 A single Flower project implementing three privacy attacks on federated
-learning and one cryptographic defence, all selectable by configuration flags.
+learning and one cryptographic defense, all selectable by configuration flags.
 
 | Mode | Flag | Attack | Adversary | Dataset |
 |------|------|--------|-----------|---------|
@@ -10,7 +10,7 @@ learning and one cryptographic defence, all selectable by configuration flags.
 | PHE  | `use-encryption=true` | Additively Homomorphic Encryption (Phong et al., 2017) | — | CIFAR-100 |
 | GAN  | `use-gan=true` | Deep Models Under the GAN (Hitaj et al., CCS 2017) | **client** | MNIST |
 
-PHE composes with every mode. Against DLG/iDLG it is a complete defence;
+PHE composes with every mode. Against DLG/iDLG it is a complete defense;
 against the GAN attack it provably changes nothing — see below.
 
 ## Install
@@ -48,7 +48,7 @@ flwr run . --run-config "use-idlg=false" --stream
 # 2. iDLG (analytic label extraction, 100% label accuracy)
 flwr run . --run-config "use-idlg=true" --stream
 
-# 3. PHE defence — gradients encrypted, server cannot invert them
+# 3. PHE defense — gradients encrypted, server cannot invert them
 flwr run . --run-config "use-idlg=true use-encryption=true" --stream
 
 # 4. GAN reconstruction attack (malicious client, honest server)
@@ -102,7 +102,7 @@ gradient has the opposite sign (Eq. 4 of the paper). This is implemented in
 
 ```bash
 flwr run . --run-config "use-idlg=true"                       # iDLG
-flwr run . --run-config "use-idlg=true use-encryption=true"   # iDLG + PHE defence
+flwr run . --run-config "use-idlg=true use-encryption=true"   # iDLG + PHE defense
 ```
 
 ## Attack variant: GAN reconstruction (Hitaj et al., CCS 2017)
@@ -168,7 +168,7 @@ pairing each reconstruction with its nearest real image under L1 distance.
 
 The flags compose: `use-gan` selects the client-side attack with an honest
 server, while `use-idlg` / `use-encryption` govern the server-side attack and
-its cryptographic defence.
+its cryptographic defense.
 
 ## Running the GAN attack with PHE
 
