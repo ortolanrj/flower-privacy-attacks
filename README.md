@@ -58,21 +58,6 @@ flwr run . gan-simulation --run-config "use-gan=true num-server-rounds=160" --st
 flwr run . gan-simulation --run-config \
   "use-gan=true use-encryption=true num-server-rounds=160 max-encrypt-values=500" --stream
 
-## Layout
-
-```
-dlg_flower/
-├── dlg_flower/
-│   ├── task.py         # LeNet, CIFAR-100, DLG + iDLG attacks, label extraction
-│   ├── crypto.py       # PaillierCrypto: keygen, encrypt, homomorphic add, decrypt
-│   ├── gan_attack.py   # CNNClassifier, Generator, MNIST split, GAN attack
-│   ├── client_app.py   # @app.train() / @app.evaluate()
-│   └── server_app.py   # @app.main(); MaliciousFedAvg + HonestFedAvg
-├── run_dlg.py          # standalone DLG/iDLG runner
-├── download_data.py    # one-time dataset download (run before flwr run)
-└── pyproject.toml
-```
-
 ---
 
 ## Attack variants: DLG and iDLG
@@ -121,7 +106,7 @@ Enabled with `use-gan`.
   **adversary = partition 1** (digits 5–9).
 * `target-class = 4` belongs to the victim and is never owned by the adversary.
 
-### Mechanism (Algorithm 1)
+### Mechanism
 
 Each round the adversary: loads the downloaded model as discriminator `D`;
 trains its generator `G` (SGD, lr 0.02, 100 steps) so `D` labels `G(z)` as the
